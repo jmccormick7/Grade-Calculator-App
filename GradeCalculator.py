@@ -124,6 +124,8 @@ class ViewClassesPage(HomePage):
         # Add the button widget to the window
         self.button.pack(padx=10, pady=10)
 
+        self.tableFrame = tk.Frame(self.window)
+        self.tableFrame.config(width = 500)
         # Start the event loop
         self.window.mainloop()
 
@@ -131,21 +133,50 @@ class ViewClassesPage(HomePage):
         print("View Grades")
 
     def semesterSelect(self, value):
+        
         self.semester_dropdown.destroy()
         self.infolabel.destroy()
+        self.button.destroy()
         self.classlist = []
+        self.creditlist = []
         conn = sql.connect("GradeCalculator.db")
         cur = conn.cursor()
         cur.execute("SELECT * FROM classes WHERE semester = ?", (value,))
         class_tuple = cur.fetchall()
         for elements in class_tuple:
             self.classlist.append(elements[0])
+            self.creditlist.append(elements[1])
         conn.commit()
         conn.close()
         # Create a table of buttons with the class names, and when clicked, call the viewGrades method, but also have labels next to them with their respective credits and grade percentage
+        class_label = tk.Label(self.tableFrame, text="Class")
+        credit_label = tk.Label(self.tableFrame, text="Credits")
+        class_label.grid(row = 0, column = 0, sticky = tk.W, pady=5)
+        credit_label.grid(row = 0, column = 1, sticky = tk.E, pady=5)
+        count = 1
         for element in self.classlist:
-            button = tk.Button(self.window, text=element, command=self.viewGrades)
-            button.pack(padx=10, pady=10)
+            button = tk.Button(self.tableFrame, text=element, command=self.viewGrades)
+            button.grid(row = count, column = 0, sticky = tk.W, pady=5)
+            count += 1
+        
+        count2 = 1
+        for element in self.creditlist:
+            creditlabel = tk.Label(self.tableFrame, text=element)
+            creditlabel.grid(row = count2, column = 1, sticky = tk.E, pady=5)
+            count2 += 1
+        
+        self.tableFrame.pack(pady = 10)
+        ## Still need to add grade percentage labels
+
+        back_button = tk.Button(self.window, text="Back", command=self.back)
+        back_button.pack(padx=10, pady=10)
+        # Create a button widget
+        self.button = tk.Button(self.window, text="Exit", command=self.window.quit)
+
+        # Add the button widget to the window
+        self.button.pack(padx=10, pady=10)
+
+
             
     def selectSemester(self):
         self.selectedSemester = tk.StringVar(self.window)
@@ -153,6 +184,9 @@ class ViewClassesPage(HomePage):
         self.semester_dropdown = tk.OptionMenu(self.window, self.selectedSemester, *self.semesters, command=self.semesterSelect)
         self.semester_dropdown.pack(padx=10, pady=10)
 
+    def back(self):
+        self.window.destroy()
+        root = ViewClassesPage()
 
 class AddClassPage(HomePage):
     def __init__(self):
@@ -242,6 +276,10 @@ class AddClassPage(HomePage):
         conn = sql.connect("GradeCalculator.db")
         cur = conn.cursor()
         cur.execute("INSERT INTO classes VALUES (?, ?, ?)", (className, creditHours, semester))
+        conn.commit()
+        conn.close()
+        self.window.destroy()
+
 
     def semesterEnter(self, selected_value):
         self.SemesterName = tk.StringVar(value = selected_value)

@@ -39,4 +39,3 @@ def show_table(database_name, table_name):
     conn.commit()
     conn.close()
     return table_elements
-

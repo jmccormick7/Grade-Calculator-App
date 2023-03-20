@@ -80,6 +80,10 @@ class HomePage:
         self.semester_enter.destroy()
         self.sem_enter_button.destroy()
 
+    def back(self):
+        self.window.destroy()
+        root = HomePage()
+
 
 
 # Class for the view classes page
@@ -117,7 +121,10 @@ class ViewClassesPage(HomePage):
         #     #create a button widget
         #     button = tk.Button(window, text= class_list(i), command=viewGrades)
 
-
+        #create a back button
+        self.backButton = tk.Button(self.window, text="Back", command = self.window.destroy)
+        self.backButton.pack(padx=10, pady=10)
+        
         # Create a button widget
         self.button = tk.Button(self.window, text="Exit", command=self.window.quit)
 
@@ -184,9 +191,6 @@ class ViewClassesPage(HomePage):
         self.semester_dropdown = tk.OptionMenu(self.window, self.selectedSemester, *self.semesters, command=self.semesterSelect)
         self.semester_dropdown.pack(padx=10, pady=10)
 
-    def back(self):
-        self.window.destroy()
-        root = ViewClassesPage()
 
 class AddClassPage(HomePage):
     def __init__(self):
@@ -257,6 +261,10 @@ class AddClassPage(HomePage):
         # Create an entry button
         self.entryButton2 = tk.Button(self.window, text="Enter", command = self.classEnter)
         self.entryButton2.pack(padx=10, pady=10)
+
+        #create a back button
+        self.backButton = tk.Button(self.window, text="Back", command = self.window.destroy)
+        self.backButton.pack(padx=10, pady=10)
 
         # Create a button widget
         self.button = tk.Button(self.window, text="Exit", command=self.window.quit)

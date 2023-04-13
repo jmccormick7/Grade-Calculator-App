@@ -845,9 +845,8 @@ class ViewGradesPage(ViewClassesPage):
             finalgrades.append(grades[i] * float(self.categoryWeight[i]))
         
         currentGrade = sum(finalgrades) 
-        print(currentGrade)
         neededCategoryGrade = (desiredGrade - currentGrade) / float(weight)
-        print(neededCategoryGrade)
+
 
         conn = sql.connect("GradeCalculator.db")
         cur = conn.cursor()
@@ -858,14 +857,16 @@ class ViewGradesPage(ViewClassesPage):
         points = 0
         totalPoints = 0
         if len(data) == 0:
-            return "No Inputted Grades"
-        for element in data:
-            points += element[2]
-            totalPoints += element[3]
+            points = 0
+            totalPoints = 0
+        else:
+            for element in data:
+                points += element[2]
+                totalPoints += element[3]
         
         totalPoints += availablePoints
         neededPoints = neededCategoryGrade * (totalPoints - points)
-        return neededPoints/availablePoints
+        return round(neededPoints/availablePoints, 2)
 
 
 

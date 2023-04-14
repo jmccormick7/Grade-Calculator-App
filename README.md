@@ -38,6 +38,6 @@ Checking for what User needs on the Final:
 <img width="912" alt="Screenshot 2023-04-14 at 1 39 57 AM" src="https://user-images.githubusercontent.com/123213439/231951152-ddcfd66c-ce75-4603-b3f2-be2e92b18100.png">
 
 
-
-
 In the future, I would like to improve the visual aesthetics of the program, as well as include a predictive model that can predict the probability of a user getting a certain grade in the class.
+ 
+ 
